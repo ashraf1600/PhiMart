@@ -13,7 +13,7 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email' # use email as the unique identifier for authentication instead of username
     REQUIRED_FIELDS = []
 
-    objects = CustomUserManager()
+    objects = CustomUserManager() # specify the custom user manager for the User model
 
     def __str__(self):
         return self.email
