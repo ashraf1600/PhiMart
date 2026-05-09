@@ -8,6 +8,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', api_root_view),
     path('api-auth/', include('rest_framework.urls')),  # DRF auth
+    path('auth/', include('djoser.urls')),  # Djoser auth endpoints
+    path('auth/', include('djoser.urls.jwt')),  # Djoser JWT endpoints
     path('api/v1/',include('api.urls') , name='api-root')
     
 ]
