@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from decimal import Decimal
 from product.models import Product , Category , Review
+from django.contrib.auth import get_user_model
 
 
 
@@ -37,10 +38,26 @@ class ProductSerializer(serializers.ModelSerializer):
         return price
 
 
+class SimpleUserSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField(method_name='get_current_user_name')
+    class Meta:
+        model = get_user_model()
+        fields = ['id', 'name']
+
+        def get_current_user_name(self, obj):
+
+            return obj.get_full_name()
+
 class ReviewSerializer(serializers.ModelSerializer): 
+    # user = SimpleUserSerializer()  # রিভিউ লেখার সময় ইউজার ফিল্ডটি read-only করা হয়েছে
+    user = serializers.SerializerMethodField(method_name='get_user')  # রিভিউ লেখার সময় ইউজার ফিল্ডটি read-only করা হয়েছে
     class Meta:
         model = Review
-        fields = ['id', 'name', 'description']
+        fields = ['id', 'user','product','ratings', 'comment']
+        read_only_fields = ['user', 'product']  # user এবং product ফিল্ডগুলো read-only করা হয়েছে
+
+        def get_user(self, obj):
+            return SimpleUserSerializer(obj.user).data
 
     def create(self, validated_data):
         product_id = self.context.get('product_id')

@@ -12,6 +12,7 @@ from rest_framework.filters import SearchFilter , OrderingFilter
 from product.paginations import DefaultPagination
 from rest_framework.permissions import IsAdminUser, IsAuthenticated , AllowAny
 from rest_framework.permissions import DjangoModelPermissions
+from product.permissions import IsReviewAuthorOrReadOnly
 
 '''
 | বিষয়               | কাজ                                                                       
@@ -64,6 +65,8 @@ class CategoryViewSet(ModelViewSet):  # Typo fixed here
 
 class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
+    permission_classes = [IsReviewAuthorOrReadOnly]
+    
 
     def get_queryset(self):
         product_id = self.kwargs['product_pk']
@@ -81,5 +84,9 @@ class ReviewViewSet(ModelViewSet):
             raise NotFound("Product not found")
 
         serializer.save(product=product)
+
+
+    def perform_update(self, serializer):
+        serializer.save(user = self.request.user)    
 
     
