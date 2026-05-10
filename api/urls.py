@@ -21,6 +21,8 @@ cart_router.register(r'items' , CartItemViewSet , basename = 'cart-item' )
 urlpatterns = [
     path('', include(router.urls)),  # সব URL রাউটারের মাধ্যমে manage হবে
     path('', include(product_router.urls)),  # Nested URL রাউটারের মাধ্যমে manage হবে
-    path('' , include(cart_router.urls))
+    path('' , include(cart_router.urls)),
+    path('auth/', include('djoser.urls')),  # Djoser auth endpoints
+    path('auth/', include('djoser.urls.jwt')),  # Djoser JWT endpoints
 ]
  
