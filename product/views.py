@@ -11,6 +11,7 @@ from product.filters import ProductFilter
 from rest_framework.filters import SearchFilter , OrderingFilter
 from product.paginations import DefaultPagination
 from rest_framework.permissions import IsAdminUser, IsAuthenticated , AllowAny
+from rest_framework.permissions import DjangoModelPermissions
 
 '''
 | বিষয়               | কাজ                                                                       
@@ -36,6 +37,7 @@ class ProductViewSet(ModelViewSet):
     ordering_fields = ['price','updated_at']
     # permission_classes = [IsAuthenticated , IsAdminUser ]
     permission_classes = [IsAdminOrReadOnly]
+    # permission_classes = [DjangoModelPermissions]
 
     # def get_permissions(self):
 
