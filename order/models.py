@@ -63,6 +63,7 @@ class OrderItem(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    total_price = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
 
     def __str__(self):
         return f"{self.quantity} X {self.product.name} in order {self.order.id}"
