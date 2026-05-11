@@ -1,7 +1,7 @@
 from rest_framework.viewsets import GenericViewSet , ModelViewSet
 from rest_framework.mixins import CreateModelMixin , RetrieveModelMixin , DestroyModelMixin
-from .models import Cart , CartItem
-from .serializers import CartSerializer , CartItemSerializer , AddCartItemSerializer ,UpdateCartitemSerializer
+from .models import Cart , CartItem, Order
+from .serializers import CartSerializer , CartItemSerializer , AddCartItemSerializer, OrderSerializer ,UpdateCartitemSerializer
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -34,3 +34,11 @@ class CartItemViewSet(ModelViewSet):
 
     def get_queryset(self):
         return CartItem.objects.filter(cart_id = self.kwargs['cart_pk'])
+    
+
+
+
+class OrderViewSet(ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]

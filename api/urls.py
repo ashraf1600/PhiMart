@@ -1,8 +1,8 @@
 # api/urls.py
 
 from django.urls import path, include
-from product.views import ProductViewSet, CategoryViewSet , ReviewViewSet 
-from order.views import CartViewSet , CartItemViewSet
+from product.views import ProductViewSet, CategoryViewSet , ReviewViewSet
+from order.views import CartViewSet , CartItemViewSet, OrderViewSet
 from rest_framework_nested import routers
 
 
@@ -11,6 +11,7 @@ router =routers.DefaultRouter()
 router.register(r'products', ProductViewSet , basename='products')  # basename যুক্ত করা হয়েছে
 router.register(r'categories', CategoryViewSet)
 router.register(r'carts', CartViewSet , basename='carts')  # basename যুক্ত করা হয়েছে
+router.register(r'orders', OrderViewSet , basename='orders')
 
 product_router = routers.NestedDefaultRouter(router, r'products', lookup='product')
 product_router.register(r'reviews', ReviewViewSet, basename='product-reviews')

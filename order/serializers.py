@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import Cart, CartItem
+from .models import Cart, CartItem, Order
 from product.serializers import ProductSerializer
 from product.models import Product
-
+from django.db import models
 
 class SimpleProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -85,4 +85,7 @@ class CartSerializer(serializers.ModelSerializer):
 
 
 
-
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['id','user','status','total_price','created_at','items']
