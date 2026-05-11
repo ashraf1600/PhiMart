@@ -33,11 +33,13 @@ class CartItem(models.Model): # done
 
 class Order(models.Model):
 
-    PENDING = 'pending'
-    SHIPPED = 'shipped'
-    DELIVERD = 'delivered'
+    NOT_PAID = 'Not Paid'
+    READY_TO_SHIP = 'Ready to Ship'
+    SHIPPED = 'Shipped'
+    DELIVERD = 'Delivered'
     STATUS_CHOICES = [
-        (PENDING, 'Pending'),
+        (NOT_PAID, 'Not Paid'),
+        (READY_TO_SHIP, 'Ready to Ship'),
         (SHIPPED, 'Shipped'),
         (DELIVERD, 'Delivered'),
     ]
