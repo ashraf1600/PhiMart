@@ -33,7 +33,7 @@ class CartItemViewSet(ModelViewSet):
        
 
     def get_queryset(self):
-        return CartItem.objects.filter(cart_id = self.kwargs['cart_pk'])
+        return CartItem.objects.prefetch_related('items__product').filter(user = self.request.user)
     
 
 
@@ -46,5 +46,5 @@ class OrderViewSet(ModelViewSet):
 
     def get_queryset(self):
         if self.request.user.is_staff:
-            return Order.objects.all()
-        return Order.objects.filter(user = self.request.user)
+            return Order.objects.prefetch_related('items__product').all()
+        return Order.objects.prefetch_related('items__product').filter(user = self.request.user)

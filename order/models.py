@@ -54,7 +54,7 @@ class Order(models.Model):
    
 
     def __str__(self):
-        return f"Order {self.id} by {self.user.username} on {self.created_at} with status {self.status}"
+        return f"Order {self.id} by {self.user.first_name} on {self.created_at} with status {self.status}"
     
 
 class OrderItem(models.Model):
