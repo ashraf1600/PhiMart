@@ -1,7 +1,7 @@
 from rest_framework.viewsets import GenericViewSet , ModelViewSet
 from rest_framework.mixins import CreateModelMixin , RetrieveModelMixin , DestroyModelMixin
 from .models import Cart , CartItem, Order
-from .serializers import CartSerializer , CartItemSerializer , AddCartItemSerializer, OrderSerializer ,UpdateCartitemSerializer
+from .serializers import CartSerializer , CartItemSerializer , AddCartItemSerializer, CreateOrderSerializer, OrderSerializer ,UpdateCartitemSerializer
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -11,6 +11,10 @@ class CartViewSet(CreateModelMixin, GenericViewSet, RetrieveModelMixin, DestroyM
     # queryset = Cart.objects.all()
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated]
+
+
+    def perform_create(self, serializer):
+        serializer.save(user = self.request.user)
 
 
     def get_queryset(self):
@@ -38,10 +42,18 @@ class CartItemViewSet(ModelViewSet):
 
 
 
+
+
 class OrderViewSet(ModelViewSet):
-    queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
+
+
+    def get_serializer_class(self):
+
+        if self.request.method == 'POST':
+            return CreateOrderSerializer
+        return OrderSerializer
 
 
     def get_queryset(self):
