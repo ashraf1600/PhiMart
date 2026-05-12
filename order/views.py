@@ -54,6 +54,9 @@ class OrderViewSet(ModelViewSet):
         if self.request.method == 'POST':
             return CreateOrderSerializer
         return OrderSerializer
+    
+    def get_serializer_context(self):
+        return {'user_id' : self.request.user.id}
 
 
     def get_queryset(self):
