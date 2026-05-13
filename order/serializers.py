@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from order.services import OrderService
 from .models import Cart, CartItem, Order, OrderItem
 from product.serializers import ProductSerializer
 from product.models import Product
@@ -97,25 +99,19 @@ class CreateOrderSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         user_id = self.context['user_id']  
-        cart_id = validated_data['cart_id']  
-        cart = Cart.objects.get(pk=cart_id)
-        cart_items = cart.select_related('product').all()
+        cart_id = validated_data['cart_id'] 
 
-        total_price = sum([item.quantity * item.product.price for item in cart_items])
-        order = Order.objects.create(user_id=user_id, total_price=total_price)
-        order_items = [
-            OrderItem(
-                order=order,
-                product=item.product,
-                quantity=item.quantity,
-                price=item.product.price,
-                total_price=item.quantity * item.product.price
-            )
-            for item in cart_items
-        ]
-        OrderItem.objects.bulk_create(order_items)
-        cart_items.delete()
-        return order
+
+        
+        try:
+            order = OrderService.create_order(user_id=user_id, cart_id=cart_id) 
+            return order
+        
+        except Exception as e:
+            raise serializers.ValidationError(str(e))
+
+
+       
     
     def to_representation(self, instance):
         return OrderSerializer(instance).data
