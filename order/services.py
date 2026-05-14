@@ -3,6 +3,7 @@ from django.db import transaction
 
 
 
+
 class OrderService:
     @staticmethod
 
@@ -27,4 +28,27 @@ class OrderService:
             cart_items.delete()
             return order
         # Logic to create an order
+
+    @staticmethod
+    def cancel_order(order , user ):
+        if user.is_staff or order.user_id == user.id:
+            order.status = Order.CANCELED
+            order.save()
+            return order
+        
+        if order.user != user:
+            raise PermissionError("You do not have permission to cancel this order.")
+        
+        if order.status == Order.DELIVERD:
+            raise ValueError("Delivered orders cannot be canceled.")
+        
+
+        order.status = Order.CANCELED
+        order.save()
+        return order
+        
+        
+
+
+
         

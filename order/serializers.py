@@ -129,10 +129,23 @@ class OrderItemSerializer(serializers.ModelSerializer):
         fields = ['id','order','product','quantity','price','total_price']
 
 
-class UpdateSerializer(serializers.ModelSerializer):
+class UpdateOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['status']
+
+    def update(self, instance, validated_data):
+        user = self.context['user']
+        new_status = validated_data.get('status')
+
+        if new_status == Order.CANCELED:
+            try:
+                canceled_order = OrderService.cancel_order(order=instance, user=user)
+                return canceled_order
+            except PermissionError as pe:
+                raise serializers.ValidationError(str(pe))
+            except ValueError as ve:
+                raise serializers.ValidationError(str(ve))
 
 
 class OrderSerializer(serializers.ModelSerializer):
