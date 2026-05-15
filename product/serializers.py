@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from decimal import Decimal
-from product.models import Product , Category , Review
+from product.models import Product , Category, ProductImage , Review
 from django.contrib.auth import get_user_model
 
 
@@ -61,7 +61,14 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         product_id = self.context.get('product_id')
-        return Review.objects.create(product_id=product_id, **validated_data)    
+        return Review.objects.create(product_id=product_id, **validated_data)
+
+
+
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = [ 'image']        
 
 
            
