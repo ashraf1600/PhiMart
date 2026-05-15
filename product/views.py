@@ -1,8 +1,8 @@
 from rest_framework.response import Response
 from rest_framework import status
 from api.permissions import IsAdminOrReadOnly
-from product.models import Product, Category , Review
-from product.serializers import ProductSerializer, CategorySerializer , ReviewSerializer
+from product.models import Product, Category, ProductImage , Review
+from product.serializers import ProductImageSerializer, ProductSerializer, CategorySerializer , ReviewSerializer
 from django.db.models import Count
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import NotFound
@@ -55,6 +55,26 @@ class ProductViewSet(ModelViewSet):
             return Response({'message': "Product with stock more than 10 can't be deleted"})
         self.perform_destroy(product)
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class ProductImageViewSet(ModelViewSet):
+    serializer_class = ProductImageSerializer
+
+    def get_queryset(self):
+        return ProductImage.objects.filter(product_id=self.kwargs['product_pk'])
+    
+
+    def perform_create(self, serializer):
+        product_id = self.kwargs['product_pk']
+        product = Product.objects.filter(pk=product_id).first()
+        if not product:
+            raise NotFound("Product not found")
+        serializer.save(product=product)
+   
+
+
+
+
 
 
 class CategoryViewSet(ModelViewSet):  # Typo fixed here
