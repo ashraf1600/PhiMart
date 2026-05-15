@@ -6,6 +6,10 @@ from product.serializers import ProductSerializer
 from product.models import Product
 from django.db import models
 
+
+class EmptySerializer(serializers.Serializer):
+    pass
+
 class SimpleProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
