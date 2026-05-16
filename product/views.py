@@ -59,6 +59,7 @@ class ProductViewSet(ModelViewSet):
 
 class ProductImageViewSet(ModelViewSet):
     serializer_class = ProductImageSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_queryset(self):
         return ProductImage.objects.filter(product_id=self.kwargs['product_pk'])
