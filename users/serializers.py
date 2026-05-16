@@ -11,6 +11,7 @@ class UserCreateSerializer(BaseUserCreateSerializer):
 
 
 class UserSerializer(BaseUserSerializer):
+    ref_name = 'CustomUser'
     class Meta(BaseUserSerializer.Meta):
         fields = ['id', 'email', 'first_name', 'last_name', 'address', 'phone_number']
 

@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'order',
     'debug_toolbar', 
     'django_filters',  # Django Filter for filtering capabilities in APIs
+    'drf_yasg',  # Django REST Framework - Yet Another Swagger Generator for API documentation
 
 ]
 

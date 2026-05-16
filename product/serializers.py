@@ -5,6 +5,11 @@ from django.contrib.auth import get_user_model
 
 
 
+
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = [ 'id', 'image']        
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -18,6 +23,9 @@ class CategorySerializer(serializers.ModelSerializer):
         
     
 class ProductSerializer(serializers.ModelSerializer):
+    images = ProductImageSerializer(many=True, read_only=True)
+
+
     category = serializers.HyperlinkedRelatedField(
         queryset=Category.objects.all(),  # এখানে অবশ্যই Category মডেল হতে হবে
         view_name='category-detail',
@@ -27,7 +35,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'stock', 'category', 'price_with_tax']
+        fields = ['id', 'name', 'description', 'price', 'stock', 'category', 'price_with_tax', 'images']
 
     def get_price_with_tax(self, product):
         return round(product.price * Decimal(1.1), 2)  # Assuming 10% tax rate
@@ -65,10 +73,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 
-class ProductImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = [ 'id', 'image']        
+
 
 
            
