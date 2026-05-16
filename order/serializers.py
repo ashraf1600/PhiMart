@@ -20,7 +20,7 @@ class AddCartItemSerializer(serializers.ModelSerializer):
     product_id = serializers.IntegerField()
     class Meta:
         model = CartItem
-        fields = ['id','product_id' , 'quantity']
+        fields = ['id','product_id' , 'quantity' ,'total_price']
 
 
     def save(self, **kwargs):
@@ -32,6 +32,7 @@ class AddCartItemSerializer(serializers.ModelSerializer):
             cart_item = CartItem.objects.get(
                 cart_id=cart_id , product_id=product_id )
             cart_item.quantity +=quantity
+            cart_item.total_price = cart_item.quantity * cart_item.product.price
 
             self.instance = cart_item.save() 
 
@@ -69,7 +70,7 @@ class CartItemSerializer(serializers.ModelSerializer):
    
     class Meta:
         model = CartItem
-        fields = ['id','product', 'quantity',]
+        fields = ['id','product', 'quantity','total_price']
 
     def get_total_price(self , cart_item:CartItem):
         return cart_item.quantity * cart_item.product.price   
