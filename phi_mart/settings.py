@@ -3,6 +3,7 @@
 from pathlib import Path
 import os
 from datetime import timedelta
+import cloudinary
 from decouple import config
 from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -202,3 +203,16 @@ DJOSER = {
         'current_user': 'users.serializers.UserSerializer',
     }
 }
+
+# Configuration       
+cloudinary.config( 
+    cloud_name =config('cloud_name'),
+    api_key = config('api_key'), 
+    api_secret = config('api_secret'), # Click 'View API Keys' above to copy your API secret
+    secure=True
+)
+
+
+# mdeia storage settings
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
