@@ -4,7 +4,7 @@ from pathlib import Path
 import os
 from datetime import timedelta
 from decouple import config
-
+from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -92,6 +92,42 @@ WSGI_APPLICATION = 'phi_mart.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+load_dotenv()  # Load environment variables from .env file
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('DB_NAME'),
+#         'USER': os.getenv('DB_USER'),
+#         'PASSWORD': os.getenv('DB_PASSWORD'),
+#         'HOST': os.getenv('DB_HOST'),
+#         'PORT': os.getenv('DB_PORT'),
+#     }
+# }
+
+# print("DB_USER =", os.getenv("DB_USER"))
+# print("DB_HOST =", os.getenv("DB_HOST"))
+# print("DB_PORT =", os.getenv("DB_PORT"))
+
+print("DB CONFIG:")
+print("NAME =", os.getenv("DB_NAME"))
+print("USER =", os.getenv("DB_USER"))
+print("PASSWORD =", os.getenv("DB_PASSWORD"))
+print("HOST =", os.getenv("DB_HOST"))
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
+    }
+}
+
+print(DATABASES)
 
 
 # Password validation
