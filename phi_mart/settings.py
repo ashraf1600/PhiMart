@@ -197,15 +197,17 @@ DJOSER = {
 }
 
 # Cloudinary Configuration (keep if you're using Cloudinary for media storage)
-cloudinary.config( 
-    cloud_name=config('cloud_name'),
-    api_key=config('api_key'), 
-    api_secret=config('api_secret'),
-    secure=True
-)
+# cloudinary.config( 
+#     cloud_name=config('cloud_name'),
+#     api_key=config('api_key'), 
+#     api_secret=config('api_secret'),
+#     secure=True
+# )
 
 # Media storage settings - Comment this out if you want to use local media storage
 # DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Optional: If you want to use Cloudinary, install:
 # pip install cloudinary django-cloudinary-storage
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

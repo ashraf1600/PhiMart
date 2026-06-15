@@ -2,8 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from product.validators import validate_file_size
-from cloudinary.models import CloudinaryField
-# Create your models here.
+# Remove: from cloudinary.models import CloudinaryField
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -25,20 +24,19 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
-    image = CloudinaryField('image')
-    # file = models.FileField(upload_to='products/files/', validators=[FileExtensionValidator(allowed_extensions=['pdf', 'docx', 'txt'])], blank=True, null=True)
+    image = models.ImageField(upload_to='products/%Y/%m/%d/')  # Changed from CloudinaryField
     alt_text = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return f"Image for {self.product.name}"    
+        return f"Image for {self.product.name}"
+
 
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
-    # name = models.CharField(max_length=100)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     ratings = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     comment = models.TextField()
@@ -46,13 +44,5 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
     def __str__(self):
         return f"Review for {self.product.name} by {self.user.username}"
-
-
-# Step to build an API
-# Model
-# Serializer
-# ViewSet
-# URL routing
