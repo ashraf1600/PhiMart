@@ -84,18 +84,17 @@ class SimpleUserSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    user = SimpleUserSerializer(read_only=True)
-    
     class Meta:
         model = Review
         fields = ['id', 'user', 'product', 'ratings', 'comment', 'created_at']
         read_only_fields = ['user', 'product', 'created_at']
 
-    def create(self, validated_data):
-        product_id = self.context.get('product_id')
-        user = self.context.get('request').user
-        return Review.objects.create(
-            product_id=product_id,
-            user=user,
-            **validated_data
-        )
+    def validate_ratings(self, value):
+        if value < 1 or value > 5:
+            raise serializers.ValidationError("Rating must be between 1 and 5.")
+        return value
+
+    def validate_comment(self, value):
+        if not value or not value.strip():
+            raise serializers.ValidationError("Comment cannot be empty.")
+        return value

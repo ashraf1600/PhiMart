@@ -77,7 +77,7 @@ class ReviewViewSet(ModelViewSet):
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context['product_id'] = self.kwargs['product_pk']
-        context['request'] = self.request  # Add request to context
+        context['request'] = self.request
         return context
 
     def perform_create(self, serializer):
@@ -86,6 +86,3 @@ class ReviewViewSet(ModelViewSet):
         if not product:
             raise NotFound("Product not found")
         serializer.save(product=product, user=self.request.user)
-
-    def perform_update(self, serializer):
-        serializer.save(user=self.request.user)
