@@ -84,7 +84,7 @@ class SimpleUserSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    user = SimpleUserSerializer(read_only=True)  # nested object with read_only
+    user = SimpleUserSerializer(read_only=True)
     
     class Meta:
         model = Review
@@ -92,8 +92,10 @@ class ReviewSerializer(serializers.ModelSerializer):
         read_only_fields = ['user', 'product', 'created_at']
 
     def create(self, validated_data):
-        product_id = self.context.get('product_id')
         user = self.context.get('request').user
+        product_id = self.context.get('product_id')
+        # Remove any user key if present (shouldn't be)
+        validated_data.pop('user', None)
         return Review.objects.create(
             product_id=product_id,
             user=user,
