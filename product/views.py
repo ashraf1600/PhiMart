@@ -77,7 +77,7 @@ class ReviewViewSet(ModelViewSet):
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context['product_id'] = self.kwargs['product_pk']
-        context['request'] = self.request
+        context['request'] = self.request # kfnl
         return context
 
     def perform_create(self, serializer):
